@@ -1,22 +1,20 @@
 import styles from './maker.module.css';
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import Editor from '../editor/editor';
 import Preview from '../preview/preview';
 
-const Maker = ({ FileInput,authService, cardRepository }) => {
-	// 배열 + map은 state의 모든 데이터를 일주 후 item을 리턴하지만
-	// object는 key만 일주 하고 return하기때문에 양이 많을때 더 빠르다
+const Maker = ({ FileInput, authService, cardRepository }) => {
 	const NavigateState = useNavigate().state;
 	const [cards, setCards ] = useState({});
 	const [userId, setUserId] = useState(NavigateState && NavigateState.id);
 
 	const navigate = useNavigate();
-	const onLogout = () => {
+	const onLogout = useCallback(() => {
 		authService.logout();
-	};
+	}, [authService]);
 
 	useEffect(() => {
 		if(!userId) {
